@@ -2,11 +2,15 @@ import csv
 import os
 import sys
 import queue
+import datetime
 
 people = False
-pet = False
-finish = False
+animal = False
+way_out = False
 counter = 0
+
+
+
 def createMaze():
     filepath = 'maze_map.txt'
     
@@ -15,23 +19,13 @@ def createMaze():
         maze = []
         for item in lines:
             maze.append(item.rstrip('\n').rsplit(" "))
-            # maze.append(" ".join(item.rstrip('\n')))
-    
+            
     return maze
-
-# print(maze)
-# print(maze[0])
-# print(maze[1])
-# print(maze[2])
-# print(maze[3])
-# print(maze[4])
-# print(maze[5])
-# print(maze[6])
-# print(maze[7])
-# print(maze[8])
 
 
 def printMaze(maze, path=""):
+
+
     for x, pos in enumerate(maze[0]):
         if pos == "O":
             start = x
@@ -40,6 +34,7 @@ def printMaze(maze, path=""):
     j = 0
     pos = set()
     for move in path:
+        
         if move == "L":
             i -= 1
 
@@ -51,8 +46,8 @@ def printMaze(maze, path=""):
 
         elif move == "D":
             j += 1
+        
         pos.add((j, i))
-    
     for j, row in enumerate(maze):
         for i, col in enumerate(row):
             if (j, i) in pos:
@@ -60,10 +55,10 @@ def printMaze(maze, path=""):
             else:
                 print(col + " ", end="")
         print()
-        
 
 
 def valid(maze, moves):
+    global moves_counter
     for x, pos in enumerate(maze[0]):
         if pos == "O":
             start = x
@@ -82,7 +77,6 @@ def valid(maze, moves):
 
         elif move == "D":
             j += 1
-
         if not(0 <= i < len(maze[0]) and 0 <= j < len(maze)):
             return False
         elif (maze[j][i] == "#"):
@@ -92,11 +86,15 @@ def valid(maze, moves):
 
 
 def findEnd(maze, moves):
-    global people 
-    global pet 
-    global finish 
+     
+    global way_out 
     global counter
 
+    exit_counter = 0
+
+    timeStamp = datetime.datetime.utcnow()
+    
+    
     for x, pos in enumerate(maze[0]):
         if pos == "O":
             start = x
@@ -115,30 +113,42 @@ def findEnd(maze, moves):
 
         elif move == "D":
             j += 1
-    
-    # if maze[j][i] == "X":
-    #     print("Rescue Team have found the exit")
-    #     print(moves)
-    #     printMaze(maze, moves)
-    #     return True
-    if maze[j][i] == "X" and finish == False :
-        print("Rescue Team have found the exit")
-        #print(moves)
-        printMaze(maze, moves)
-        # finish = True
+        exit_counter += 1
 
+    if maze[j][i] == "X" and way_out == False :
+        print()
+        print("========= Given Action =========")
+        print()
+        print(" Rescue Team have found the exit")
+        print()
+        print(" Found Directions: " + moves)
+        print()
+        print(" Execution Moves: " + (str(exit_counter)))
+        print()
+        print(" Action Time Stamp: " + str(timeStamp))
+        print()
+        print("========= Maze Visualization =========")
+        print()
+        printMaze(maze, moves)
         counter += 1
         finish = True
-
+        print()
+        print("-----------------------------------")
+        print()
+        
     return False
 
 
 
 def findpet(maze, moves):
-    global people 
-    global pet 
-    global finish 
+    
+    global animal  
     global counter
+
+    animal_counter = 0
+
+    timeStamp = datetime.datetime.utcnow()
+   
 
     for x, pos in enumerate(maze[0]):
         if pos == "O":
@@ -158,30 +168,40 @@ def findpet(maze, moves):
 
         elif move == "D":
             j += 1
+        animal_counter += 1
 
-    # if maze[j][i] == "$": 
-    #     print("Rescue Team have found animal")
-    #     print("Found: " + moves)
-    #     printMaze(maze, moves)
-    #     return True
-    if maze[j][i] == "$" and pet == False: 
-        print("Rescue Team have found animal")
-        # print("Found: " + moves)
+    if maze[j][i] == "$" and animal == False:
+        print()
+        print("========= Given Action =========")
+        print()
+        print(" Rescue Team have found animal")
+        print()
+        print(" Found Directions: " + moves)
+        print()
+        print(" Execution Moves: " + (str(animal_counter)))
+        print()
+        print(" Action Time Stamp: " + str(timeStamp))
+        print()
+        print("========= Maze Visualization =========")
+        print()
         printMaze(maze, moves)
-        # pet = True
-
         counter += 1
-        pet = True
+        animal = True
+        print()
+        print("-----------------------------------")
+        print()
     return False
 
 
 
 def findPeople(maze, moves):
     global people 
-    global pet 
-    global finish 
     global counter
-    
+
+    people_counter = 0
+
+    timeStamp = datetime.datetime.utcnow()
+
     for x, pos in enumerate(maze[0]):
         if pos == "O":
             start = x
@@ -191,51 +211,35 @@ def findPeople(maze, moves):
     for move in moves:
         if move == "L":
             i -= 1
-
         elif move == "R":
             i += 1
-
         elif move == "U":
             j -= 1
-
         elif move == "D":
             j += 1
-    
-    if maze[j][i] == "@" and people == False:
-        print("Rescue Team have found people")
-        # print("Found: " + moves)
-        printMaze(maze, moves)
-        # people = True
+        people_counter += 1
 
+    if maze[j][i] == "@" and people == False:
+        print()
+        print("========= Given Action =========")
+        print()
+        print(" Rescue Team have found people")
+        print()
+        print(" Found Directions: " + moves)
+        print()
+        print(" Execution Moves: " + (str(people_counter)))
+        print()
+        print(" Action Time Stamp: " + str(timeStamp))
+        print()
+        print("========= Maze Visualization =========")
+        print()
+        printMaze(maze, moves)
         counter += 1
         people = True
+        print()
         print("-----------------------------------")
-        
-        
-        
-         
-        
-    # elif maze[j][i] == "$" and pet == False: 
-    #     print("Rescue Team have found animal")
-    #     # print("Found: " + moves)
-    #     printMaze(maze, moves)
-    #     # pet = True
-
-    #     counter += 1
-    #     pet = True
-        
-        
-        
-    # elif maze[j][i] == "X" and finish == False :
-    #     print("Rescue Team have found the exit")
-    #     #print(moves)
-    #     printMaze(maze, moves)
-    #     # finish = True
-
-    #     counter += 1
-    #     finish = True
-        
-        
+        print()
+       
         
     return False
 
@@ -259,27 +263,6 @@ while counter <= 3:
         put = add + j
         if  valid(maze, put):
             nums.put(put)
+        
     if counter == 3:
-        # nums.task_done()
-        break
-
-        
-            
-
-
-# while not findpet(maze, add): 
-#     add = nums.get()
-#     print(add)
-#     for j in ["L", "R", "U", "D"]:
-#         put = add + j
-#         if  valid(maze, put):
-#             nums.put(put)
-
-        
-# while not findEnd(maze, add): 
-#     add = nums.get()
-#     print(add)
-#     for j in ["L", "R", "U", "D"]:
-#         put = add + j
-#         if  valid(maze, put):
-#             nums.put(put)
+            break
