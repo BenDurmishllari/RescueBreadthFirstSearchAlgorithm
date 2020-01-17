@@ -5,6 +5,7 @@
 # Student: Arben Durmishllari                 #
 # Student Code - bh19hd                       #
 # Course: Computer Science - 3rd Year         #
+# Project:Virtual Rescue System-BFS Algorithm #
 ###############################################
 
 
@@ -433,7 +434,6 @@ def findPeople(maze, moves):
         print()
         print("-----------------------------------")
         print()
-       
         
     return False
 
